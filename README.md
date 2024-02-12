@@ -120,3 +120,24 @@ sudo deluser <username> sudo
 ```bash
 sudo ls
 ```
+
+# Q3    Configure your system in such a way that when a user type and executes a describe command from anywhere of the system it must list all the files and folders of the user's current directory.
+# Ex:- $ describe
+# $  content1 content2
+# Content3 content 4
+
+## We can do this by making alias for ls -lt  or ls as follows
+## 1. Open your .bashrc file using a text editor. You can do this by running:
+```bash
+nano ~/.bashrc
+```
+## 2. Add the following line at the end of the file:
+```bash
+alias describe="ls"
+```
+## 3. Save the file and exit the text editor.
+## 4. To apply the changes, either restart your terminal or run:
+```bash
+source ~/.bashrc
+```
+## Now, when you type describe in your terminal, it will behave the same as ls.
