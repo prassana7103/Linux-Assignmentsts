@@ -4,7 +4,7 @@ Linux Assignment
 
 #  Q1) SMTP Configuration for Localhost
 We can setup the SMTP server using Postfix
-## 1: Update Package List
+### 1: Update Package List
 
 update the package list to ensure you have the latest information:
 
