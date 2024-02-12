@@ -2,7 +2,7 @@
 Linux Assignment
 
 
-#  1) SMTP Configuration for Localhost
+#  Q1) SMTP Configuration for Localhost
 We can setup the SMTP server using Postfix
 ## 1: Update Package List
 
@@ -86,4 +86,37 @@ Ensure that Postfix is enabled to start at boot:
 ```bash
 
 sudo systemctl enable postfix
+```
+## 6: Send a Test Email
+
+```bash
+sendmail mailid@example.com
+To: mailid@example.com
+Subject: Test mail #1
+This is just a test email
+. 
+```
+#  Q2) Create a user in your localhost, which should not be able to execute the sudo command.
+## 1.  Use the adduser or useradd command to create a new user.
+```bash
+sudo adduser <username>
+```
+For example,
+
+```bash
+sudo adduser prassana
+```
+## 2.Give the information prompted in the terminal
+
+## 3.So to see to which groups the user belongs to use the following command
+```bash
+groups <username>
+```
+## 4.If it belongs to the sudo group use the following command to remove the user from the sudo group 
+```bash
+sudo deluser <username> sudo
+```
+## 5 To verify user does not have sudo privileges you can try to run any command with sudo for example
+```bash
+sudo ls
 ```
