@@ -121,10 +121,9 @@ sudo deluser <username> sudo
 sudo ls
 ```
 
-# Q3    Configure your system in such a way that when a user type and executes a describe command from anywhere of the system it must list all the files and folders of the user's current directory.
+# Q3) Configure your system in such a way that when a user type and executes a describe command from anywhere of the system it must list all the files and folders of the user's current directory.
 # Ex:- $ describe
-# $  content1 content2
-# Content3 content 4
+# $  content1 content2 Content3 content 4
 
 ## We can do this by making alias for ls -lt  or ls as follows
 ## 1. Open your .bashrc file using a text editor. You can do this by running:
@@ -141,3 +140,119 @@ alias describe="ls"
 source ~/.bashrc
 ```
 ## Now, when you type describe in your terminal, it will behave the same as ls.
+
+# Q4)U sers can put a compressed file at any path of the linux file system. The name of the file will be research and the extension will be of compression type, example for gzip type extension will be .gz. You have to find the file and check the compression type and uncompress it. 
+## We can write a script for this as follows:
+## 1. Find the research file with any extension
+```bash
+research_file=$(find / -name "research.*" 2>/dev/null)
+
+if [ -z "$research_file" ]; then
+echo "Research file not found."
+exit 1
+fi
+```
+## 2. Determine compression type
+```bash
+	compression_type="${research_file##*.}"
+
+	case "$compression_type" in
+    gz)
+        echo "Found gzip compressed file: $research_file"
+        gzip -d "$research_file"
+        ;;
+    bz2)
+        echo "Found bzip2 compressed file: $research_file"
+        bzip2 -d "$research_file"
+        ;;
+    zip)
+        echo "Found zip compressed file: $research_file"
+        unzip "$research_file"
+        ;;
+    *)
+        echo "Unknown compression type: $compression_type"
+        exit 1
+        ;;
+	esac
+
+	echo "File uncompressed successfully."
+```
+## 3. Now just run the script file and it will find the file and uncompress it.
+
+# Q5) Configure your system in such a way that any user of your system creates a file then there should not be permission to do any activity in that file.
+## Note:- Don’t use the chmod command.
+## 1. To restrict all permissions for others, set the umask value to 0777 into your shell file .bashrc
+
+```bash
+umask 0777
+```
+## 2. This will ensure that when any user creates a file, the default permissions for others will be restricted, and they won't have any access to the file.
+
+## 3. Save the changes run the following command to apply the new umask setting immediately:
+
+```bash
+source ~/.bashrc
+```
+## 4. For example, if a user creates a file using the touch command:
+
+```bash
+touch newfile.txt
+```
+## 5. The permissions for myfile.txt will be such that only the file owner will have read and write access, while all others will have no permissions. The file owner can still modify its permissions if needed.
+
+
+# Q6) Create a service with the name showtime , after starting the service, every minute it should print the current time in a file in the user home directory.
+
+## Ex:-
+## sudo service showtime start   -> It should start writing in file.
+## sudo service showtime stop   -> It should stop writing in file.
+## sudo service showtime status -> It should show status.
+
+## To create a systemd service named "showtime" that prints the current time to a file in the user's home directory every minute, follow these steps:
+## 1.  Create a Bash script that prints the current time and saves it to a file.
+
+```bash
+#!/bin/bash
+while true; do
+    date | awk '{print $4}'  >> "$HOME/showtime.txt"
+    sleep 60 
+done
+```
+## 2. Save this script and make it executable:
+
+```bash
+chmod +x /home/<username>/showtime.sh
+```
+## 3. create a new file as /etc/systemd/system/showtime.service, and add the following content to it:
+
+```bash
+[Unit]
+Description=Showtime Service
+
+[Service]
+Type=simple
+ExecStart=/home/showtime.sh
+User=<username>
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+## 4. Reload the systemd manager configuration to update the available services:
+
+```bash
+sudo systemctl daemon-reload
+
+```
+## 5. Enable the "showtime" service to start on boot:
+
+```bash
+sudo systemctl enable showtime.service
+
+```
+## 6. Start the "showtime" service:
+
+```bash
+    sudo systemctl start showtime.service
+```
+## The "showtime" service is now running and will print the current time to the showtime.txt file in the user's home directory every minute. You can check the output in home directory with in the file called showtime.txt.
