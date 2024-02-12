@@ -144,41 +144,10 @@ source ~/.bashrc
 # Q4)U sers can put a compressed file at any path of the linux file system. The name of the file will be research and the extension will be of compression type, example for gzip type extension will be .gz. You have to find the file and check the compression type and uncompress it. 
 ## We can write a script for this as follows:
 
-### 1. Find the research file with any extension
+### Use following command to find and decompressed the compressed file
 ```bash
-research_file=$(find / -name "research.*" 2>/dev/null)
-
-if [ -z "$research_file" ]; then
-echo "Research file not found."
-exit 1
-fi
+find / -name "research.gz" -exec gunzip {} \; 
 ```
-### 2. Determine compression type
-```bash
-	compression_type="${research_file##*.}"
-
-	case "$compression_type" in
-    gz)
-        echo "Found gzip compressed file: $research_file"
-        gzip -d "$research_file"
-        ;;
-    bz2)
-        echo "Found bzip2 compressed file: $research_file"
-        bzip2 -d "$research_file"
-        ;;
-    zip)
-        echo "Found zip compressed file: $research_file"
-        unzip "$research_file"
-        ;;
-    *)
-        echo "Unknown compression type: $compression_type"
-        exit 1
-        ;;
-	esac
-
-	echo "File uncompressed successfully."
-```
-### 3. Now just run the script file and it will find the file and uncompress it.
 
 # Q5) Configure your system in such a way that any user of your system creates a file then there should not be permission to do any activity in that file.
 ## Note:- Don’t use the chmod command.
