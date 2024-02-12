@@ -185,7 +185,7 @@ fi
 ### 1. To restrict all permissions for others, set the umask value to 0777 into your shell file .bashrc
 
 ```bash
-umask 0777
+umask 077
 ```
 ### 2. This will ensure that when any user creates a file, the default permissions for others will be restricted, and they won't have any access to the file.
 
